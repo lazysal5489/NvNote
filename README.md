@@ -9,7 +9,7 @@ NvNote lets you write notes in Markdown and organize them without relying on fol
 ## Features
 
 - `Makrdown notes` - create and edit notes with standard Markdown formatting.
-- `Tag` - attact tags to notes to group them by topic: duplicate/blank tag are rejected.
+- `Tag` - attach tags to notes to group them by topic: duplicate/blank tag are rejected.
 - `Note linking` - link notes with `[[Note Tiltle]]` syntax;linked notes show backlinks,and links to a renamed/deleted note are flagged as broken.
 - `Search` - search notes by title, content, or tag,with tile matches ranked first.
 - `offline-first` - works entirely without internet;notes live in the app's local storage folder by default.
