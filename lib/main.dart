@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:nvnote/screens/note_editor_screen.dart';
+import 'package:nvnote/themes/system_theme.dart';
 
 void main() {
-  return runApp(
+  runApp(
     MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Color(0xFF1d2021),
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(35.0),
-          child: AppBar(
-            backgroundColor: Color(0xFF32302f),
-            title: const Text(
-              "NvNote",
-              style: TextStyle(
-                color: Color(0xFFebdbb2),
-                fontFamily: "JetbrainMono",
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            centerTitle: true,
-          ),
-        ),
-      ),
+      title: 'nvnote',
+      theme: SystemTheme.dark,
+      home: const HomeScreen(),
     ),
   );
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('NvNote')),
+      body: const LiveMarkdownEditor(),
+    );
+  }
 }
