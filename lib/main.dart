@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(
+  return runApp(
     MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: Container(
-            padding: EdgeInsets.all(40),
-            decoration: BoxDecoration(
-              color: const Color(0xff4E7DF5),
-              borderRadius: BorderRadius.circular(30),
+        backgroundColor: Color(0xFF1d2021),
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(35.0),
+          child: AppBar(
+            backgroundColor: Color(0xFF32302f),
+            title: const Text(
+              "NvNote",
+              style: TextStyle(
+                color: Color(0xFFebdbb2),
+                fontFamily: "JetbrainMono",
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            child: Text(
-              "HELLO",
-              style: TextStyle(color: Colors.white, fontSize: 32),
-            ),
+            centerTitle: true,
           ),
         ),
       ),
