@@ -39,6 +39,7 @@ lib/
   data/       # VaultStorage — reads/writes .md files
   screens/    # NoteListScreen, NoteEditorScreen, TagsScreen, SearchScreen
   widgets/    # Reusable UI pieces (NoteCard, TagChip, ...)
+  themes/     # Color theme system 
 ```
 
 `screens` -> `services` -> `data` -> `models`.business logic lives in services,independent of any widget,so it can be unit tested on it own.
