@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:nvnote/screens/note_editor_screen.dart';
 import 'package:nvnote/themes/system_theme.dart';
 
-void main() => runApp(const NvNote());
+void main() => runApp(const MyApp());
 
-class NvNote extends StatelessWidget {
-  const NvNote({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

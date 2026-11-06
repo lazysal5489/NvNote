@@ -92,7 +92,7 @@ class SystemTheme {
     // Input fields
     inputDecorationTheme: const InputDecorationTheme(
       filled: true,
-      fillColor: SystemColorTheme.dark0,
+      fillColor: SystemColorTheme.dark0Hard,
       border: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.transparent),
       ),
@@ -100,7 +100,7 @@ class SystemTheme {
         borderSide: BorderSide(color: Colors.transparent),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: SystemColorTheme.blue),
+        borderSide: BorderSide(color: Colors.transparent),
       ),
       hintStyle: TextStyle(color: SystemColorTheme.gray),
     ),
