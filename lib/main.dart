@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:nvnote/screens/note_editor_screen.dart';
 import 'package:nvnote/themes/system_theme.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
+void main() => runApp(const NvNote());
+
+class NvNote extends StatelessWidget {
+  const NvNote({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'nvnote',
+      title: 'NvNote',
       theme: SystemTheme.dark,
-      home: const HomeScreen(),
-    ),
-  );
+      home: HomeScreen(),
+    );
+  }
 }
 
 class HomeScreen extends StatelessWidget {
