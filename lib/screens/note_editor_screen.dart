@@ -60,6 +60,8 @@ class FencedCodeBuilder extends MarkdownElementBuilder {
   }
 }
 
+enum _ViewMode { edit, preview, split }
+
 class LiveMarkdownEditor extends StatefulWidget {
   const LiveMarkdownEditor({super.key});
 
@@ -69,6 +71,7 @@ class LiveMarkdownEditor extends StatefulWidget {
 
 class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
   final TextEditingController _controller = TextEditingController(text: '');
+  _ViewMode _mode = _ViewMode.edit;
 
   @override
   void dispose() {
@@ -80,27 +83,108 @@ class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: ((context, constraints) {
-        final isWide = constraints.maxWidth > 700;
-        final editor = _buildEditorPane();
-        final preview = _buildPreviewPane();
-        return isWide
-            ? Row(
-                children: [
-                  Expanded(child: editor),
-                  const VerticalDivider(width: 1),
-                  Expanded(child: preview),
+    final theme = Theme.of(context);
+
+    return Column(
+      children: [
+        Container(
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainer,
+            border: Border(
+              top: BorderSide(
+                width: 1,
+                color: theme.colorScheme.surfaceContainerHighest,
+              ),
+              bottom: BorderSide(
+                width: 1,
+                color: theme.colorScheme.surfaceContainerHighest,
+              ),
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          child: Row(
+            children: [
+              Expanded(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  // TODO: replace this with note title in the future(file name);
+                  child: Text('Note Title', style: theme.textTheme.labelMedium),
+                ),
+              ),
+              SegmentedButton<_ViewMode>(
+                segments: const [
+                  ButtonSegment(
+                    value: _ViewMode.edit,
+                    label: Text('Edit'),
+                    icon: Icon(Icons.edit_outlined, size: 12),
+                  ),
+                  ButtonSegment(
+                    value: _ViewMode.split,
+                    label: Text('Split'),
+                    icon: Icon(Icons.visibility_outlined, size: 12),
+                  ),
+                  ButtonSegment(
+                    value: _ViewMode.preview,
+                    label: Text('Preview'),
+                    icon: Icon(Icons.visibility_outlined, size: 12),
+                  ),
                 ],
-              )
-            : Column(
-                children: [
-                  Expanded(child: editor),
-                  const Divider(height: 1),
-                  Expanded(child: preview),
-                ],
-              );
-      }),
+                selected: {_mode},
+                onSelectionChanged: (newSelection) {
+                  setState(() => _mode = newSelection.first);
+                },
+                showSelectedIcon: false,
+                style: SegmentedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                  side: BorderSide.none,
+                  backgroundColor: theme.colorScheme.surfaceContainerHigh,
+                  selectedBackgroundColor:
+                      theme.colorScheme.surfaceContainerHighest,
+                  selectedForegroundColor: theme.colorScheme.onSurface,
+                  visualDensity: VisualDensity.compact,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
+                  ),
+                  textStyle: const TextStyle(fontSize: 10),
+                  minimumSize: const Size(0, 0),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final isWide = constraints.maxWidth > 650;
+
+              return switch (_mode) {
+                _ViewMode.edit => _buildEditorPane(),
+                _ViewMode.preview => _buildPreviewPane(),
+                _ViewMode.split =>
+                  isWide
+                      ? Row(
+                          children: [
+                            Expanded(child: _buildEditorPane()),
+                            const VerticalDivider(width: 1),
+                            Expanded(child: _buildPreviewPane()),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            Expanded(child: _buildEditorPane()),
+                            const Divider(height: 1),
+                            Expanded(child: _buildPreviewPane()),
+                          ],
+                        ),
+              };
+            },
+          ),
+        ),
+      ],
     );
   }
 
