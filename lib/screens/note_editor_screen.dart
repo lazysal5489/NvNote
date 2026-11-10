@@ -4,6 +4,12 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:nvnote/themes/code_theme.dart';
+import 'package:nvnote/models/buffer.dart';
+import 'package:nvnote/widgets/buffer_tab_bar.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:material_symbols_icons/symbols.dart';
+
+import 'dart:ui' as ui;
 
 class FencedCodeBuilder extends MarkdownElementBuilder {
   @override
@@ -73,6 +79,9 @@ class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
   final TextEditingController _controller = TextEditingController(text: '');
   _ViewMode _mode = _ViewMode.edit;
 
+  final List<Buffer> _buffers = [const Buffer(id: '1', title: 'NvNote')];
+  String _activeBufferId = '1';
+
   @override
   void dispose() {
     _controller.dispose();
@@ -81,12 +90,35 @@ class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
 
   void _onChanged(String _) => setState(() {});
 
+  void _selectBuffer(String id) {
+    setState(() => _activeBufferId = id);
+  }
+
+  void _closeBuffer(String id) {
+    setState(() {
+      _buffers.removeWhere((b) => b.id == id);
+
+      if (_activeBufferId == id && _buffers.isNotEmpty) {
+        _activeBufferId = _buffers.first.id;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Column(
       children: [
+        BufferTabBar(
+          buffers: _buffers,
+          activeId: _activeBufferId,
+          onSelect: _selectBuffer,
+          onClose: _closeBuffer,
+          onToggleSidebar: () {
+            //TODO: wire up later
+          },
+        ),
         Container(
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainer,
@@ -116,17 +148,17 @@ class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
                   ButtonSegment(
                     value: _ViewMode.edit,
                     label: Text('Edit'),
-                    icon: Icon(Icons.edit_outlined, size: 12),
+                    icon: Icon(Symbols.edit, size: 12),
                   ),
                   ButtonSegment(
                     value: _ViewMode.split,
                     label: Text('Split'),
-                    icon: Icon(Icons.visibility_outlined, size: 12),
+                    icon: Icon(Symbols.split_scene, size: 12),
                   ),
                   ButtonSegment(
                     value: _ViewMode.preview,
                     label: Text('Preview'),
-                    icon: Icon(Icons.visibility_outlined, size: 12),
+                    icon: Icon(Symbols.visibility, size: 12),
                   ),
                 ],
                 selected: {_mode},
@@ -160,7 +192,6 @@ class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
           child: LayoutBuilder(
             builder: (context, constraints) {
               final isWide = constraints.maxWidth > 650;
-
               return switch (_mode) {
                 _ViewMode.edit => _buildEditorPane(),
                 _ViewMode.preview => _buildPreviewPane(),
@@ -197,6 +228,8 @@ class _LiveMarkDownEditorState extends State<LiveMarkdownEditor> {
         maxLines: null,
         expands: true,
         textAlignVertical: TextAlignVertical.top,
+        selectionHeightStyle: ui.BoxHeightStyle.tight,
+        selectionWidthStyle: ui.BoxWidthStyle.tight,
         style: const TextStyle(fontFamily: 'JetBrainMono', fontSize: 16),
         decoration: const InputDecoration(
           hoverColor: Colors.transparent,
