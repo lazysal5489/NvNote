@@ -42,7 +42,7 @@ class SystemColorTheme {
 
   // Selection colors
   static const selectionForeground = Color(0xFFEBDBB2);
-  static const selectionBackground = Color(0x22EBDBB2);
+  static const selectionBackground = Color(0x33FE8019);
 
   // Cursor colors
   static const cursor = Color(0xFFBDAE93);

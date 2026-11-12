@@ -49,7 +49,7 @@ class FencedCodeBuilder extends MarkdownElementBuilder {
       'dart' => 'dart',
       'python' || 'py' => 'python',
       'bash' || 'sh' => 'bash',
-      _ => 'plaintext',
+      _ => 'text',
     };
 
     return Container(
