@@ -15,10 +15,11 @@ class VaultService {
 
   Future<String> _rootPath() async =>
       p.join((await baseDir()).path, _vaultFolder);
-  String? _clean(String? name) {
-    final trimed = name?.trim();
 
-    return (trimed == null || trimed.isEmpty) ? null : trimed;
+  String? _clean(String? name) {
+    final trimmed = name?.trim();
+
+    return (trimmed == null || trimmed.isEmpty) ? null : trimmed;
   }
 
   Future<bool> vaultExists() async => Directory(await _rootPath()).exists();
